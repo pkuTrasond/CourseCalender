@@ -17,6 +17,7 @@
 #include <QByteArray>
 #include <QFile>
 #include <QJsonArray>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -28,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     setWindowTitle("CourseTable");
 
-    ui->tabWidget->setTabText(0, _codec->toUnicode("课程表"));
+    ui->tabWidget->setTabText(0, "课程表");
 
     // 设置课程表
     ui->tabWidget->setCurrentIndex(0);
@@ -51,6 +52,7 @@ void MainWindow::initCourseTable()
     ui->courseTable->setGeometry(10, 0, 1281, 675);
 
     // 设置行数、列数
+    qDebug("开始构建课程表");
     int row = 11, col = 8;
     ui->courseTable->setRowCount(row);
     ui->courseTable->setColumnCount(col);
@@ -59,14 +61,7 @@ void MainWindow::initCourseTable()
 
     // 设置表头
     QStringList header;
-    header << _codec->toUnicode("时间")
-           << _codec->toUnicode("一")
-           << _codec->toUnicode("二")
-           << _codec->toUnicode("三")
-           << _codec->toUnicode("四")
-           << _codec->toUnicode("五")
-           << _codec->toUnicode("六")
-           << _codec->toUnicode("日");
+    header << "时间" << "一" << "二" << "三" << "四" << "五" << "六" << "日";
     ui->courseTable->setHorizontalHeaderLabels(header);
 
     readCourseJson();
@@ -131,6 +126,8 @@ void MainWindow::readCourseJson()
         jsonData = file.readAll();
         file.close();
     }
+
+    qDebug("开始解析文件");
 
     QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
 

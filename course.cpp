@@ -8,7 +8,7 @@ course::course(QWidget *parent)
     ui(new Ui::course)
 {
     ui->setupUi(this);
-    _codec = QTextCodec::codecForName("GBR");
+    _codec = QTextCodec::codecForName("GBK");
 
     // 设置窗口标题
     setWindowTitle(_codec->toUnicode("课程信息"));

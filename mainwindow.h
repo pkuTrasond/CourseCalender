@@ -34,6 +34,24 @@ public:
     // 初始化课程列表
     void initCourseTable();
 
+    // 读取Json
+    void readCourseJson();
+
+    // 添加新课程
+    void on_addCourseButton_clicked();
+
+    // 添加课程
+    void addCourseButton(QString courseName,
+                         int courseDay,
+                         int courseTimeBegin,
+                         int courseTimeEnd,
+                         QString courseLocation,
+                         QString courseTeacher,
+                         QString courseExamLocation,
+                         QString courseExamTime);
+
+
+
 
 private:
     QPushButton *courseButton;

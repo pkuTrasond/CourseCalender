@@ -12,6 +12,11 @@
 #include <QMap>
 #include <QHeaderView>
 #include <QTextCodec>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QByteArray>
+#include <QFile>
+#include <QJsonArray>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -25,18 +30,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->tabWidget->setTabText(0, _codec->toUnicode("课程表"));
 
-    initMain();
+    // 设置课程表
+    ui->tabWidget->setCurrentIndex(0);
+
+    initCourseTable();
+
+    this->show();
 
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void initMain()
-{
-
 }
 
 void MainWindow::initCourseTable()
@@ -64,32 +69,7 @@ void MainWindow::initCourseTable()
            << _codec->toUnicode("日");
     ui->courseTable->setHorizontalHeaderLabels(header);
 
-    // 读入文件，写入table
-    /**
-     *
-     *
-     **/
-
-    // 创建课程按钮
-    QString courseName;
-    int courseDay;
-    int courseTimeBegin;
-    int courseTimeEnd;
-    QString courseLocation;
-    QString courseTeacher;
-    QString courseExamLocation;
-    QString courseExamTime;
-
-    while() {
-
-        // 获取信息
-
-        // 记录
-        this->courseMap.insert();
-
-        // 添加课程按钮
-        addCourseButton(coursename ....)
-    }
+    readCourseJson();
 
 }
 
@@ -139,4 +119,53 @@ void MainWindow::addCourseButton(QString courseName,
         this->course.courseExamTime=courseExamTime;
     });
 
+}
+
+void MainWindow::readCourseJson()
+{
+
+    // 读入文件
+    QFile file("./course.json");
+    QByteArray jsonData;
+    if (file.open(QIODevice::ReadOnly)) {
+        jsonData = file.readAll();
+        file.close();
+    }
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+
+    // 转化文件
+    if (jsonDoc.isObject()) {
+        QJsonObject obj_root = jsonDoc.object();
+        QStringList keys = obj_root.keys();
+        for (auto key : keys) {
+            QJsonValue arrayTemp = obj_root.value(key);
+            QJsonArray courseArray = arrayTemp.toArray();
+
+            // 添加课程信息
+
+            // 课程id
+            QString courseName=courseArray.at(0).toString();
+
+            int courseDay=courseArray.at(1).toInt();
+            int courseTimeBegin=courseArray.at(2).toInt();
+            int courseTimeEnd=courseArray.at(3).toInt();
+            QString courseLocation=courseArray.at(4).toString();
+            QString courseTeacher=courseArray.at(5).toString();
+
+            QString courseExamLocation=courseArray.at(6).toString();
+            QString courseExamTime=courseArray.at(7).toString();
+
+            this->courseMap.insert(key.toInt(), courseName);
+
+            addCourseButton(courseName,
+                            courseDay,
+                            courseTimeBegin,
+                            courseTimeEnd,
+                            courseLocation,
+                            courseTeacher,
+                            courseExamLocation,
+                            courseExamTime);
+        }
+    }
 }

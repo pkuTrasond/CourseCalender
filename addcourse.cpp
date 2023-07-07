@@ -39,8 +39,8 @@ void AddCourse::on_buttonBox_accepted()
     QString courseLocation=ui->courseLocationEdit->text();
     QString courseTeacher=ui->courseTeacherEdit->text();
 
-    QString courseExamLocation=ui->courseExamLocationEdit->text();
-    QString courseExamTime=ui->courseExamTime->text();
+    // QString courseExamLocation=ui->courseExamLocationEdit->text();
+    // QString courseExamTime=ui->courseExamTime->text();
 
     //判断课程名是否非空
     if(courseName=="")
@@ -68,7 +68,7 @@ void AddCourse::on_buttonBox_accepted()
     // 写入文件逻辑
     // ...
 
-    emit courseButtonSignal(...)
+    // emit courseButtonSignal(...)
 
 }
 

@@ -121,4 +121,5 @@ void course::del()
 bool course::conflict(int courseDay, int courseTimeBegin, int courseTimeEnd)
 {
     // ...
+    return false;
 }

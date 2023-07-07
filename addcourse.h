@@ -20,7 +20,7 @@ public:
     void clearEdit();
 
     // 判断课程冲突
-    bool conflict(...);
+    bool conflict(int courseDay, int courseTimeBegin, int courseTimeEnd);
 
 signals:
     // 课程按钮

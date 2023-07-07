@@ -17,20 +17,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     addcourse.cpp \
+    course.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     addcourse.h \
+    course.h \
     mainwindow.h
 
 FORMS += \
     mainwindow.ui \
-	addcourse.ui \
-	course.ui \
-	ddl.ui \
-	link.ui \
-	note.ui
+    addcourse.ui \
+    course.ui \
+    ddl.ui \
+    link.ui \
+    note.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

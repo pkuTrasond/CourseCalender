@@ -1,4 +1,6 @@
 #include "addcourse.h"
+#include "ui_addcourse.h"
+
 #include <QMessageBox>
 #include <QPushButton>
 #include <QVariantList>
@@ -33,7 +35,7 @@ void AddCourse::on_buttonBox_accepted()
 
     int courseDay=ui->courseDayEdit->currentIndex()+1;
     int courseTimeBegin=ui->courseDayEdit->currentIndex()+1;
-    int courseTimeEnd=ui->courseDayEditBegin->currentIndex()+1;
+    int courseTimeEnd=ui->courseTimeEditBegin->currentIndex()+1;
     QString courseLocation=ui->courseLocationEdit->text();
     QString courseTeacher=ui->courseTeacherEdit->text();
 
@@ -68,6 +70,16 @@ void AddCourse::on_buttonBox_accepted()
 
     emit courseButtonSignal(...)
 
+}
+
+void AddCourse::clearEdit()
+{
+    ui->courseNameEdit->clear();
+    ui->courseDayEdit->setCurrentIndex(0);
+    ui->courseTimeEditBegin->setCurrentIndex(0);
+    ui->courseTimeEditEnd->setCurrentIndex(0);
+    ui->courseLocationEdit->clear();
+    ui->courseTeacherEdit->clear();
 }
 
 bool AddCourse::conflict(int courseDay, int courseTimeBegin, int courseTimeEnd)

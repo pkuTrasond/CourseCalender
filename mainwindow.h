@@ -25,6 +25,10 @@ public:
 
     Ui::MainWindow *ui;
 
+    // 初始化课程列表
+    void initCourseTable();
+
+
 private:
     QPushButton *courseButton;
     QTextCodec *_codec;

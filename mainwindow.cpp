@@ -101,3 +101,42 @@ void MainWindow::on_addCourseButton_clicked() // 添加新课程
     // 添加新课程时不能做别的事情
     addCourse.exec();
 }
+
+void MainWindow::addCourseButton(QString courseName,
+                                 int courseDay,
+                                 int courseTimeBegin,
+                                 int courseTimeEnd,
+                                 QString courseLocation,
+                                 QString courseTeacher,
+                                 QString courseExamLocation,
+                                 QString courseExamTime)
+{
+    if (courseTimeEnd > courseTimeBegin) {
+        // 合并单元格
+        ui->courseTable->setSpan(courseTimeBegin-1, courseDay, (courseTimeEnd-courseTimeBegin+1), 1);
+    }
+
+    // 添加按钮至表格
+    courseButton=new QPushButton(this);
+    courseButton->setText(QString("%1\n(%2)").arg(courseName).arg(courseLocation));
+    ui->courseTable->setCellWidget(courseTimeBegin-1, courseDay, courseButton);
+
+    // 获取courseButton对应的course_id
+    // 文件逻辑
+
+
+    connect(courseButton, &QPushButton::clicked,
+            [=]()
+    {
+        this->hide();
+        this->course.courseName=courseName;
+        this->course.courseDay=courseDay;
+        this->course.courseTimeBegin=courseTimeBegin;
+        this->course.courseTimeEnd=courseTimeEnd;
+        this->course.courseLocation=courseLocation;
+        this->course.courseTeacher=courseTeacher;
+        this->course.courseExamLocation=courseExamLocation;
+        this->course.courseExamTime=courseExamTime;
+    });
+
+}

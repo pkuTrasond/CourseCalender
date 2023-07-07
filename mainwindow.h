@@ -3,6 +3,7 @@
 
 #include "qpushbutton.h"
 #include "addcourse.h"
+#include "course.h"
 #include <QMainWindow>
 #include <QMap>
 
@@ -18,10 +19,15 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    // 课程详细信息
+    course course;
+
     QMap<int, QString> courseMap;
 
     // 添加新课程的界面
     AddCourse addCourse;
+
+    void initMain();
 
     Ui::MainWindow *ui;
 

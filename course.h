@@ -31,6 +31,13 @@ public:
     // 初始化编辑区
     void initExit();
 
+    void sendSlot();
+
+    void run(int courseId);
+
+    // 初始化编辑区
+    void initEdit();
+
     // 保存修改
     void save();
 

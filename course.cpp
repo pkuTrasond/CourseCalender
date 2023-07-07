@@ -21,10 +21,10 @@ course::course(QWidget *parent)
     });
 
     //处理保存修改
-    connect(ui->saveButton,&QPushButton::clicked,this,&Course::save);
+    connect(ui->saveButton,&QPushButton::clicked,this,&course::save);
 
     //处理删除课程
-    connect(ui->delButton,&QPushButton::clicked,this,&Course::del);
+    connect(ui->delButton,&QPushButton::clicked,this,&course::del);
 }
 
 course::~course()
@@ -33,12 +33,23 @@ course::~course()
 }
 
 // 回主页信号
-void Course::sendSlot()
+void course::sendSlot()
 {
     emit back2Main();
 }
 
-void Course::run(int courseId)
+void course::initEdit()
+{
+    //初始化编辑区信息
+    ui->courseNameEdit->setText(courseName);
+    ui->courseDayEdit->setCurrentIndex(courseDay-1);
+    ui->courseTimeBeginEdit->setCurrentIndex(courseTimeBegin-1);
+    ui->courseTimeEndEdit->setCurrentIndex(courseTimeEnd-1);
+    ui->courseLocationEdit->setText(courseLocation);
+    ui->courseTeacherEdit->setText(courseTeacher);
+}
+
+void course::run(int courseId)
 {
     //传course_id
     course_id=courseId;
@@ -107,7 +118,7 @@ void course::del()
     }
 }
 
-bool Course::conflict(int courseDay, int courseTimeBegin, int courseTimeEnd)
+bool course::conflict(int courseDay, int courseTimeBegin, int courseTimeEnd)
 {
     // ...
 }

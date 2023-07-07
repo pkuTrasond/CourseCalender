@@ -19,12 +19,14 @@ SOURCES += \
     addcourse.cpp \
     course.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    matter.cpp
 
 HEADERS += \
     addcourse.h \
     course.h \
-    mainwindow.h
+    mainwindow.h \
+    matter.h
 
 FORMS += \
     mainwindow.ui \

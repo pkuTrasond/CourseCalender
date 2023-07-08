@@ -10,7 +10,6 @@
 #include <QJsonObject>
 #include <QByteArray>
 #include <QJsonArray>
-#include <QDebug>
 
 AddCourse::AddCourse(QWidget *parent) :
     QDialog(parent),
@@ -39,9 +38,9 @@ void AddCourse::on_buttonBox_accepted()
     // 获取编辑区内容
     QString courseName=ui->courseNameEdit->text();
 
-    int courseDay=ui->courseDayEdit->currentIndex()+1;
-    int courseTimeBegin=ui->courseDayEdit->currentIndex()+1;
-    int courseTimeEnd=ui->courseTimeEditBegin->currentIndex()+1;
+    int courseDay=ui->courseDayEdit->currentIndex()+0;
+    int courseTimeBegin=ui->courseTimeEditBegin->currentIndex()+1;
+    int courseTimeEnd=ui->courseTimeEditEnd->currentIndex()+1;
     QString courseLocation=ui->courseLocationEdit->text();
     QString courseTeacher=ui->courseTeacherEdit->text();
 

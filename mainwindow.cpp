@@ -144,6 +144,7 @@ void MainWindow::addCourseButton(QString courseName,
         this->course.courseLocation=courseLocation;
         this->course.courseTeacher=courseTeacher;
         this->course.courseExamInfo=courseExamInfo;
+        this->course.run(1);
     });
 
 }

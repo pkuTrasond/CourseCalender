@@ -35,7 +35,18 @@ public:
     void initCourseTable();
 
     // 读取Json
-    void readCourseJson();
+    void readCourseJson(QString courseFile);
+
+    // 写入Json
+    void writeCourseJson(QString courseFile,
+                         QString courseName,
+                         int courseDay,
+                         int courseTimeBegin,
+                         int courseTimeEnd,
+                         QString courseLocation,
+                         QString courseTeacher,
+                         QString courseExamLocation,
+                         QString courseExamTime);
 
     // 添加新课程
     void on_addCourseButton_clicked();

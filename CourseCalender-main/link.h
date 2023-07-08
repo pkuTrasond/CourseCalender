@@ -7,7 +7,6 @@
 #include<QPushButton>
 #include<QVariantList>
 #include<QFile>
-#include "course.h"
 namespace Ui {
 class Link;
 }

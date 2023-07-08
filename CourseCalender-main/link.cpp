@@ -126,14 +126,30 @@ void Link::readandwrite()
             examInfo = examMatch.captured(1);
         }
 
-        //数据转换为json的格式
+        //数据转换为json的格式，也就是day需要转换为int
+        int dayNumber = -1; // 初始化 dayNumber
 
+        if (courseDay == "一") {
+            dayNumber = 1;
+        } else if (courseDay == "二") {
+            dayNumber = 2;
+        } else if (courseDay == "三") {
+            dayNumber = 3;
+        } else if (courseDay == "四") {
+            dayNumber = 4;
+        } else if (courseDay == "五") {
+            dayNumber = 5;
+        } else {
+            // 如果 courseDay 不是上述汉字之一，可以根据实际需求进行处理
+            // 例如抛出异常、设置默认值等
+            // 这里将 dayNumber 设置为 -1 作为无效值
+        }
 
         //
 
         QJsonArray courseData;
         courseData.append(courseName);
-        courseData.append(courseDay);
+        courseData.append(dayNumber);
         courseData.append(timeBegin);
         courseData.append(timeEnd);
         courseData.append(location);

@@ -25,7 +25,8 @@ public:
     QString courseLocation;
     QString courseTeacher;
 
-    QString courseExamInfo;
+    QString courseExamLocation;
+    QString courseExamTime;
 
     // 初始化编辑区
     void initExit();

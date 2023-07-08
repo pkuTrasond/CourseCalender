@@ -10,6 +10,7 @@
 #include <QJsonObject>
 #include <QByteArray>
 #include <QJsonArray>
+#include <QDebug>
 
 AddCourse::AddCourse(QWidget *parent) :
     QDialog(parent),

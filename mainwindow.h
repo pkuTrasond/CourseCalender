@@ -45,11 +45,7 @@ public:
                          int courseTimeEnd,
                          QString courseLocation,
                          QString courseTeacher,
-                         QString courseExamLocation,
-                         QString courseExamTime);
-
-    // 添加新课程
-    void on_addCourseButton_clicked();
+                         QString courseExamInfo);
 
     // 添加课程
     void addCourseButton(QString courseName,
@@ -58,14 +54,13 @@ public:
                          int courseTimeEnd,
                          QString courseLocation,
                          QString courseTeacher,
-                         QString courseExamLocation,
-                         QString courseExamTime);
-
-
-
+                         QString courseExamInfo);
 
 private:
     QPushButton *courseButton;
     QTextCodec *_codec;
+
+private slots:
+    void on_addCourseButton_clicked();
 };
 #endif // MAINWINDOW_H

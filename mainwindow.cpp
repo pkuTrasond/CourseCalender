@@ -52,8 +52,8 @@ void MainWindow::initCourseTable()
     ui->courseTable->setGeometry(10, 0, 1281, 675);
 
     // 设置行数、列数
-    qDebug("开始构建课程表");
-    int row = 11, col = 8;
+    qDebug() << "开始构建课程表" << endl;
+    int row = 11, col = 7;
     ui->courseTable->setRowCount(row);
     ui->courseTable->setColumnCount(col);
     ui->courseTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
@@ -61,7 +61,7 @@ void MainWindow::initCourseTable()
 
     // 设置表头
     QStringList header;
-    header << "时间" << "一" << "二" << "三" << "四" << "五" << "六" << "日";
+    header << "一" << "二" << "三" << "四" << "五" << "六" << "日";
     ui->courseTable->setHorizontalHeaderLabels(header);
 
     readCourseJson("course");
@@ -70,6 +70,7 @@ void MainWindow::initCourseTable()
 
 void MainWindow::on_addCourseButton_clicked() // 添加新课程
 {
+    qDebug() << "进入添加课程窗口" << endl;
     // 清空编辑区
     addCourse.clearEdit();
 
@@ -83,8 +84,7 @@ void MainWindow::addCourseButton(QString courseName,
                                  int courseTimeEnd,
                                  QString courseLocation,
                                  QString courseTeacher,
-                                 QString courseExamLocation,
-                                 QString courseExamTime)
+                                 QString courseExamInfo)
 {
     if (courseTimeEnd > courseTimeBegin) {
         // 合并单元格
@@ -110,8 +110,7 @@ void MainWindow::addCourseButton(QString courseName,
         this->course.courseTimeEnd=courseTimeEnd;
         this->course.courseLocation=courseLocation;
         this->course.courseTeacher=courseTeacher;
-        this->course.courseExamLocation=courseExamLocation;
-        this->course.courseExamTime=courseExamTime;
+        this->course.courseExamInfo=courseExamInfo;
     });
 
 }
@@ -125,6 +124,9 @@ void MainWindow::readCourseJson(QString courseFile)
     if (file.open(QIODevice::ReadOnly)) {
         jsonData = file.readAll();
         file.close();
+    } else {
+        qDebug() << "打开文件错误，将创建新表格！" << endl;
+        return;
     }
 
     qDebug("开始解析文件");
@@ -151,8 +153,7 @@ void MainWindow::readCourseJson(QString courseFile)
                 QString courseLocation = courseObj.value("location").toString();
                 QString courseTeacher = courseObj.value("teacher").toString();
 
-                QString courseExamLocation = courseObj.value("exam_location").toString();
-                QString courseExamTime = courseObj.value("exam_time").toString();
+                QString courseExamInfo = courseObj.value("exam_info").toString();
 
                 this->courseMap.insert(course_id, courseName);
 
@@ -162,8 +163,7 @@ void MainWindow::readCourseJson(QString courseFile)
                                 courseTimeEnd,
                                 courseLocation,
                                 courseTeacher,
-                                courseExamLocation,
-                                courseExamTime);
+                                courseExamInfo);
             }
         }
     }
@@ -176,8 +176,7 @@ void MainWindow::writeCourseJson(QString courseFile,
                                  int courseTimeEnd,
                                  QString courseLocation,
                                  QString courseTeacher,
-                                 QString courseExamLocation,
-                                 QString courseExamTime)
+                                 QString courseExamInfo)
 {
 
     // 读入文件
@@ -213,11 +212,10 @@ void MainWindow::writeCourseJson(QString courseFile,
             course.insert("name", QJsonValue(courseName));
             course.insert("course_day", QJsonValue(courseDay));
             course.insert("course_time", QJsonValue(courseTimeBegin));
-            course.insert("course_time_end", QJsonValue(courseTimeEnd));
+            course.insert("course_end_time", QJsonValue(courseTimeEnd));
             course.insert("location", QJsonValue(courseLocation));
             course.insert("teacher", QJsonValue(courseTeacher));
-            course.insert("exam_location", QJsonValue(courseExamLocation));
-            course.insert("exam_time", QJsonValue(courseExamTime));
+            course.insert("exam_info", QJsonValue(courseExamInfo));
 
             courseArray.append(QJsonValue(course));
 
@@ -231,3 +229,4 @@ void MainWindow::writeCourseJson(QString courseFile,
         }
     }
 }
+

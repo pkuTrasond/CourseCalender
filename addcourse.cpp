@@ -13,11 +13,11 @@ AddCourse::AddCourse(QWidget *parent) :
     _codec = QTextCodec::codecForName("GBK");
 
     // 窗口标题
-    setWindowTitle(_codec->toUnicode("添加课程"));
+    setWindowTitle("添加课程");
 
     // 设置dialog button文字
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setText(_codec->toUnicode("确定"));
-    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(_codec->toUnicode("取消"));
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setText("确定");
+    ui->buttonBox->button(QDialogButtonBox::Cancel)->setText("取消");
 
 }
 
@@ -45,7 +45,7 @@ void AddCourse::on_buttonBox_accepted()
     //判断课程名是否非空
     if(courseName=="")
     {
-        QMessageBox::warning(this,"error",_codec->toUnicode("添加失败，课程名不能为空"));
+        QMessageBox::warning(this,"error", "添加失败，课程名不能为空");
         //isValid=false;
         //continue;
         return;
@@ -54,14 +54,14 @@ void AddCourse::on_buttonBox_accepted()
     //判断课程节数是否合法
     if(courseTimeBegin>courseTimeEnd)
     {
-        QMessageBox::warning(this,"error",_codec->toUnicode("添加失败，输入的课程节数不合法"));
+        QMessageBox::warning(this,"error","添加失败，输入的课程节数不合法");
         return;
     }
 
     //判断课程时间冲突
     if(conflict(courseDay,courseTimeBegin,courseTimeEnd))
     {
-        QMessageBox::warning(this,"error",_codec->toUnicode("添加失败，新添加的课程与已有课程时间冲突"));
+        QMessageBox::warning(this,"error","添加失败，新添加的课程与已有课程时间冲突");
         return;
     }
 
@@ -84,6 +84,5 @@ void AddCourse::clearEdit()
 
 bool AddCourse::conflict(int courseDay, int courseTimeBegin, int courseTimeEnd)
 {
-    // 冲突逻辑
-    // ...
+    return false;
 }

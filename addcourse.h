@@ -24,7 +24,13 @@ public:
 
 signals:
     // 课程按钮
-    void courseButtonSignal(QString courseName);
+    void courseButtonSignal(QString courseName,
+                            int courseDay,
+                            int courseTimeBegin,
+                            int courseTimeEnd,
+                            QString courseLocation,
+                            QString courseTeacher,
+                            QString courseExamInfo);
 
 private slots:
     void on_buttonBox_accepted();

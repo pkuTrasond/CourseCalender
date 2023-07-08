@@ -18,22 +18,24 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     addcourse.cpp \
     course.cpp \
+    link.cpp \
     main.cpp \
     mainwindow.cpp \
-    matter.cpp
+    matter.cpp \
 
 HEADERS += \
     addcourse.h \
     course.h \
+    link.h \
     mainwindow.h \
     matter.h
 
 FORMS += \
+    link.ui \
     mainwindow.ui \
     addcourse.ui \
     course.ui \
     ddl.ui \
-    link.ui \
     note.ui
 
 # Default rules for deployment.

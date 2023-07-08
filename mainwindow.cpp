@@ -36,6 +36,21 @@ MainWindow::MainWindow(QWidget *parent)
 
     initCourseTable();
 
+    //来自addcourse创建完成课程，需要在mainwindow里添加课程表和入口
+    connect(&addCourse,&AddCourse::courseButtonSignal,this,&MainWindow::addCourseButton);
+
+    //处理导入的信号
+
+
+    //处理修改课程按钮的信号
+    // connect(&course,&course::changeCourseButtonSignal,this,&MainWindow::initMain);
+
+    //处理删除课程的信号
+    // connect(&course,&course::delCourseButtonSignal,this,&MainWindow::initMain);
+
+    connect(&link,&Link::back2Course,this,&MainWindow::resetjson);
+
+
     this->show();
 
 }
@@ -76,6 +91,12 @@ void MainWindow::on_addCourseButton_clicked() // 添加新课程
 
     // 添加新课程时不能做别的事情
     addCourse.exec();
+}
+
+void MainWindow::on_fromlinkButton_clicked() //批量导入
+{
+    link.clearEdit();
+    link.exec();
 }
 
 void MainWindow::addCourseButton(QString courseName,

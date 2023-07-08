@@ -4,6 +4,7 @@
 #include "qpushbutton.h"
 #include "addcourse.h"
 #include "course.h"
+#include "link.h"
 #include <QMainWindow>
 #include <QMap>
 
@@ -23,6 +24,16 @@ public:
     course course;
 
     QMap<int, QString> courseMap;
+
+    Link link;
+
+    QString jsonloc;
+
+    void resetjson(QString jloc)
+    {
+        this->jsonloc=jloc;
+        initCourseTable();
+    }
 
     // 添加新课程的界面
     AddCourse addCourse;
@@ -61,6 +72,11 @@ private:
     QTextCodec *_codec;
 
 private slots:
+    // 添加新课程
     void on_addCourseButton_clicked();
+
+    // 从文件导入
+    void on_fromlinkButton_clicked();
+
 };
 #endif // MAINWINDOW_H

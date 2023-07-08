@@ -1,7 +1,8 @@
 #include "course.h"
 #include "ui_course.h"
 
-#include <QMessageBox>>
+#include <QMessageBox>
+#include <QDebug>
 
 course::course(QWidget *parent)
     : QWidget(parent),
@@ -11,7 +12,7 @@ course::course(QWidget *parent)
     _codec = QTextCodec::codecForName("GBK");
 
     // 设置窗口标题
-    setWindowTitle(_codec->toUnicode("课程信息"));
+    setWindowTitle("课程信息");
 
     //回到课程表页面
     connect(ui->returnButton, &QPushButton::clicked,
@@ -42,7 +43,7 @@ void course::initEdit()
 {
     //初始化编辑区信息
     ui->courseNameEdit->setText(courseName);
-    ui->courseDayEdit->setCurrentIndex(courseDay-1);
+    ui->courseDayEdit->setCurrentIndex(courseDay);
     ui->courseTimeBeginEdit->setCurrentIndex(courseTimeBegin-1);
     ui->courseTimeEndEdit->setCurrentIndex(courseTimeEnd-1);
     ui->courseLocationEdit->setText(courseLocation);
@@ -66,11 +67,12 @@ void course::save()
 
     //获取编辑区内容
     courseName=ui->courseNameEdit->text();
-    courseDay=ui->courseDayEdit->currentIndex()+1;
+    courseDay=ui->courseDayEdit->currentIndex();
     courseTimeBegin=ui->courseTimeBeginEdit->currentIndex()+1;
     courseTimeEnd=ui->courseTimeEndEdit->currentIndex()+1;
     courseLocation=ui->courseLocationEdit->text();
     courseTeacher=ui->courseTeacherEdit->text();
+    courseExamInfo=ui->courseExamInfoEdit->text();
 
     //判断课程名是否非空
     if(courseName=="")
@@ -90,12 +92,19 @@ void course::save()
         return;
     }
 
-    // 文件保存
+    //向MainWindow发信号，修改课程按钮
+    emit changeCourseTableSignal(course_id,
+                                 courseName,
+                                 courseDay,
+                                 courseTimeBegin,
+                                 courseTimeEnd,
+                                 courseLocation,
+                                 courseTeacher,
+                                 courseExamInfo);
 
     //保存成功
-    QMessageBox::information(this,"success",_codec->toUnicode("保存成功"));
+    QMessageBox::information(this,"success","保存成功");
 
-    //向MainWindow发信号，修改课程按钮
     emit changeCourseButtonSignal();
 
     //qDebug() << "here";
@@ -104,16 +113,16 @@ void course::save()
 
 void course::del()
 {
-    int sure=QMessageBox::question(this,"sure",_codec->toUnicode("确定要删除该课程吗？\n(删除课程将同时删除该课程的ddl和链接)"));
+    int sure=QMessageBox::question(this,"sure","确定要删除该课程吗？\n(删除课程将同时删除该课程的ddl和链接)");
     if(sure==QMessageBox::Yes)
     {
-        // 文件删除
-
         //删除成功
-        QMessageBox::information(this,"success",_codec->toUnicode("删除成功"));
+        QMessageBox::information(this,"success","删除成功");
 
         //向MainWindow发信号，修改课程按钮
         this->close();
+        emit deleteCourseTableSignal(course_id);
+        qDebug() << "课程删除成功" << course_id;
         emit delCourseButtonSignal();
     }
 }
@@ -123,3 +132,9 @@ bool course::conflict(int courseDay, int courseTimeBegin, int courseTimeEnd)
     // ...
     return false;
 }
+
+void course::on_returnButton_clicked()
+{
+    emit back2Main();
+}
+

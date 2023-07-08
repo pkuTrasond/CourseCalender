@@ -4,6 +4,13 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QVariantList>
+#include <QFile>
+#include <QTextCodec>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QByteArray>
+#include <QJsonArray>
+#include <QDebug>
 
 AddCourse::AddCourse(QWidget *parent) :
     QDialog(parent),
@@ -28,19 +35,19 @@ AddCourse::~AddCourse()
 
 void AddCourse::on_buttonBox_accepted()
 {
-    // 文件校验
 
     // 获取编辑区内容
     QString courseName=ui->courseNameEdit->text();
 
-    int courseDay=ui->courseDayEdit->currentIndex()+1;
-    int courseTimeBegin=ui->courseDayEdit->currentIndex()+1;
-    int courseTimeEnd=ui->courseTimeEditBegin->currentIndex()+1;
+    int courseDay=ui->courseDayEdit->currentIndex()+0;
+    int courseTimeBegin=ui->courseTimeEditBegin->currentIndex()+1;
+    int courseTimeEnd=ui->courseTimeEditEnd->currentIndex()+1;
     QString courseLocation=ui->courseLocationEdit->text();
     QString courseTeacher=ui->courseTeacherEdit->text();
 
     // QString courseExamLocation=ui->courseExamLocationEdit->text();
     // QString courseExamTime=ui->courseExamTime->text();
+    QString courseExamInfo=ui->courseExamInfoEdit->text();
 
     //判断课程名是否非空
     if(courseName=="")
@@ -65,10 +72,9 @@ void AddCourse::on_buttonBox_accepted()
         return;
     }
 
-    // 写入文件逻辑
-    // ...
+    emit addCourseTableSignal(courseName, courseDay,courseTimeBegin, courseTimeEnd, courseLocation,courseTeacher,courseExamInfo);
 
-    // emit courseButtonSignal(...)
+    emit courseButtonSignal(courseName, courseDay,courseTimeBegin, courseTimeEnd, courseLocation,courseTeacher,courseExamInfo);
 
 }
 
@@ -80,6 +86,7 @@ void AddCourse::clearEdit()
     ui->courseTimeEditEnd->setCurrentIndex(0);
     ui->courseLocationEdit->clear();
     ui->courseTeacherEdit->clear();
+    ui->courseExamInfoEdit->clear();
 }
 
 bool AddCourse::conflict(int courseDay, int courseTimeBegin, int courseTimeEnd)

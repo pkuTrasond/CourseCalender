@@ -54,6 +54,12 @@ signals:
     //删除课程按钮->MainWindow
     void delCourseButtonSignal();
 
+    void changeCourseTableSignal(int, QString, int, int, int, QString, QString, QString);
+
+    void deleteCourseTableSignal(int);
+private slots:
+    void on_returnButton_clicked();
+
 private:
     Ui::course *ui;
     QTextCodec *_codec;

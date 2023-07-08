@@ -53,15 +53,18 @@ void Link::on_buttonBox_accepted()
     QFile file(fileloc);
     if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QTextStream in(&file);
+        in.setCodec("UTF-8"); // 设置文本流的编码格式为 UTF-8
         filecontent = in.readAll(); // 将文件内容读取到成员变量中
+        qDebug() << "文件打开了";
         file.close();
     }
-
+    //qDebug()<<filecontent;
     //读和写入
     readandwrite();
 
     //发送信号 让mainwindow重新读入并显示数据库里的数据
     emit back2Course(jsonloc);
+    close();
 }
 
 void Link::clearEdit()
@@ -73,31 +76,44 @@ void Link::readandwrite()
 {
     int index=1;
     //匹配
-    QRegularExpression regex("<tr class=\"datagrid-all\">.*?"
-                             "<td class=\"datagrid\"><span>(.*?)</span></td>.*?"
-                             "<td class=\"datagrid\" align=\"center\"><span>(.*?)</span></td>.*?"
-                             "<td class=\"datagrid\" align=\"center\"><span>(.*?)</span></td>.*?"
-                             "<td class=\"datagrid\" align=\"center\"><span>(.*?)</span></td>.*?"
-                             "<td class=\"datagrid\" align=\"center\"><span>(.*?)</span></td>.*?"
-                             "<td class=\"datagrid\" align=\"center\"><span>(.*?)</span></td>.*?"
-                             "<td class=\"datagrid\"><span>(.*?)</span></td>.*?"
-                             "<td class=\"datagrid\"><span>(.*?)</span></td>");
-
+    QRegularExpression regex(
+        "<td class=\"datagrid\"><span>(.*?)</span></td>.*?"
+        "<td class=\"datagrid\" align=\"center\"><span>(.*?)</span></td>.*?"
+        "<td class=\"datagrid\" align=\"center\"><span>(.*?)</span></td>.*?"
+        "<td class=\"datagrid\" align=\"center\"><span>(.*?)</span></td>.*?"
+        "<td class=\"datagrid\" align=\"center\"><span>(.*?)</span></td>.*?"
+        "<td class=\"datagrid\" align=\"center\"><span>(.*?)</span></td>.*?"
+        "<td class=\"datagrid\"><span>(.*?)</span></td>.*?"
+        "<td class=\"datagrid\"><span>(.*?)</span></td>"
+        );
+    regex.setPatternOptions(QRegularExpression::DotMatchesEverythingOption);
+    /*QRegularExpressionMatch findmatch=regex.match(filecontent);
+    if (findmatch.hasMatch())
+    {
+        qDebug("读取到课程");
+        qDebug()<<findmatch.captured(1);
+        qDebug()<<findmatch.captured(2);
+        return;
+    }
+    else
+    {
+        qDebug("没读取到课程");
+        return;
+    }
+    */
     QRegularExpressionMatchIterator matchIterator = regex.globalMatch(filecontent);
 
-    QJsonArray jsonArray;
+    QJsonObject courseObj;  // 大类 "Course"
+    QJsonArray courseArray;
 
     while (matchIterator.hasNext()) {
+
         QRegularExpressionMatch match = matchIterator.next();
 
         QString courseName = match.captured(1);
-        QString courseType = match.captured(2);
-        QString credit = match.captured(3);
-        QString creditHours = match.captured(4);
         QString teacher = match.captured(5);
-        //QString week = match.captured(6);
-        QString department = match.captured(7);
         QString extraInfo = match.captured(8);
+        qDebug()<<"找到课程 "<<index<<' ' <<courseName<< endl;
 
         // 匹配周几信息
         QRegularExpression dayRegex("每周周(.*?)\\d+~\\d+节");
@@ -125,7 +141,7 @@ void Link::readandwrite()
         if (examMatch.hasMatch()) {
             examInfo = examMatch.captured(1);
         }
-
+        qDebug()<<"找到课程"<< endl;
         //数据转换为json的格式，也就是day需要转换为int
         int dayNumber = -1; // 初始化 dayNumber
 
@@ -140,29 +156,31 @@ void Link::readandwrite()
         } else if (courseDay == "五") {
             dayNumber = 5;
         } else {
-            // 如果 courseDay 不是上述汉字之一，可以根据实际需求进行处理
-            // 例如抛出异常、设置默认值等
-            // 这里将 dayNumber 设置为 -1 作为无效值
+            continue;
+
         }
+        dayNumber--;
 
         //
 
-        QJsonArray courseData;
-        courseData.append(courseName);
-        courseData.append(dayNumber);
-        courseData.append(timeBegin);
-        courseData.append(timeEnd);
-        courseData.append(location);
-        courseData.append(teacher);
-        courseData.append(examInfo);
+        QJsonObject course;
+        course.insert("id", QJsonValue(index));
+        course.insert("name", QJsonValue(courseName));
+        course.insert("course_day", QJsonValue(dayNumber));
+        course.insert("course_time", QJsonValue(timeBegin));
+        course.insert("course_end_time", QJsonValue(timeEnd));
+        course.insert("location", QJsonValue(location));
+        course.insert("teacher", QJsonValue(teacher));
+        course.insert("exam_info", QJsonValue(examInfo));
 
-        QString key=QString::number(index);
+        courseArray.append(QJsonValue(course));
+//        courseMap.insert(index,courseName);
         index++;
-        QJsonObject jsonObject;
-        jsonObject[key] = courseData;
-        jsonArray.append(jsonObject);
+
     }
-    QJsonDocument jsonDoc(jsonArray);
+    id_count=index;
+    courseObj.insert("Course", QJsonValue(courseArray));
+    QJsonDocument jsonDoc(courseObj);
 
     QFile jsonFile(jsonloc);
     if (jsonFile.open(QIODevice::WriteOnly | QIODevice::Text)) {

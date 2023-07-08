@@ -13,46 +13,13 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="widget" native="true">
-   <property name="geometry">
-    <rect>
-     <x>240</x>
-     <y>380</y>
-     <width>341</width>
-     <height>91</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QPushButton" name="ddlButton">
-      <property name="text">
-       <string>DDL</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="noteButton">
-      <property name="text">
-       <string>笔记</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="linkButton">
-      <property name="text">
-       <string>链接</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QWidget" name="widget_4" native="true">
    <property name="geometry">
     <rect>
      <x>220</x>
      <y>30</y>
      <width>381</width>
-     <height>331</height>
+     <height>471</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -366,6 +333,22 @@
        </item>
        <item>
         <widget class="QLineEdit" name="courseTeacherEdit"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="widget_7" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>考试信息：</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="courseExamInfoEdit"/>
        </item>
       </layout>
      </widget>

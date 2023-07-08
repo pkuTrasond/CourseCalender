@@ -4,6 +4,12 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QVariantList>
+#include <QFile>
+#include <QTextCodec>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QByteArray>
+#include <QJsonArray>
 
 AddCourse::AddCourse(QWidget *parent) :
     QDialog(parent),
@@ -28,7 +34,6 @@ AddCourse::~AddCourse()
 
 void AddCourse::on_buttonBox_accepted()
 {
-    // 文件校验
 
     // 获取编辑区内容
     QString courseName=ui->courseNameEdit->text();
@@ -41,6 +46,7 @@ void AddCourse::on_buttonBox_accepted()
 
     // QString courseExamLocation=ui->courseExamLocationEdit->text();
     // QString courseExamTime=ui->courseExamTime->text();
+    QString courseExamInfo=ui->courseExamInfoEdit->text();
 
     //判断课程名是否非空
     if(courseName=="")
@@ -66,9 +72,53 @@ void AddCourse::on_buttonBox_accepted()
     }
 
     // 写入文件逻辑
+    QFile file( courseFile );
+    QByteArray jsonData;
+
+    if (file.open(QIODevice::ReadWrite)) {
+        jsonData = file.readAll();
+    } else {
+        qDebug() << "file open error!" << endl;
+        return;
+    }
+
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData);
+    if (jsonDoc.isObject()) {
+
+        QJsonObject obj_root = jsonDoc.object();
+
+        if (obj_root.contains("Course")) {
+            QJsonValue arrayTemp = obj_root.value("Course");
+            QJsonArray courseArray = arrayTemp.toArray();
+
+            QJsonObject course;
+            course.insert("id", QJsonValue(course_id));
+            course.insert("name", QJsonValue(courseName));
+            course.insert("course_day", QJsonValue(courseDay));
+            course.insert("course_time", QJsonValue(courseTimeBegin));
+            course.insert("course_end_time", QJsonValue(courseTimeEnd));
+            course.insert("location", QJsonValue(courseLocation));
+            course.insert("teacher", QJsonValue(courseTeacher));
+            course.insert("exam_info", QJsonValue(courseExamInfo));
+
+            courseArray.append(QJsonValue(course));
+
+            obj_root.insert("Course", QJsonValue(courseArray));
+
+            QJsonDocument newJsonDoc(obj_root);
+            QByteArray newJsonData = newJsonDoc.toJson();
+
+            file.write(newJsonData);
+            file.close();
+
+            courseMap.insert(course_id,courseName);
+        }
+    }
+
+
     // ...
 
-    // emit courseButtonSignal(...)
+    emit courseButtonSignal(courseName, courseDay,courseTimeBegin, courseTimeEnd, courseLocation,courseTeacher,courseExamInfo);
 
 }
 

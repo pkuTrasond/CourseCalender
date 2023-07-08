@@ -85,7 +85,8 @@ void Link::readandwrite()
 
     QRegularExpressionMatchIterator matchIterator = regex.globalMatch(filecontent);
 
-    QJsonArray jsonArray;
+    QJsonObject courseObj;  // 大类 "Course"
+    QJsonArray courseArray;
 
     while (matchIterator.hasNext()) {
         QRegularExpressionMatch match = matchIterator.next();
@@ -147,22 +148,24 @@ void Link::readandwrite()
 
         //
 
-        QJsonArray courseData;
-        courseData.append(courseName);
-        courseData.append(dayNumber);
-        courseData.append(timeBegin);
-        courseData.append(timeEnd);
-        courseData.append(location);
-        courseData.append(teacher);
-        courseData.append(examInfo);
+        QJsonObject course;
+        course.insert("id", QJsonValue(index));
+        course.insert("name", QJsonValue(courseName));
+        course.insert("course_day", QJsonValue(dayNumber));
+        course.insert("course_time", QJsonValue(timeBegin));
+        course.insert("course_end_time", QJsonValue(timeEnd));
+        course.insert("location", QJsonValue(location));
+        course.insert("teacher", QJsonValue(teacher));
+        course.insert("exam_info", QJsonValue(examInfo));
 
-        QString key=QString::number(index);
+        courseArray.append(QJsonValue(course));
+        courseMap.insert(index,courseName);
         index++;
-        QJsonObject jsonObject;
-        jsonObject[key] = courseData;
-        jsonArray.append(jsonObject);
+
     }
-    QJsonDocument jsonDoc(jsonArray);
+    id_count=index;
+    courseObj.insert("Course", QJsonValue(courseArray));
+    QJsonDocument jsonDoc(courseObj);
 
     QFile jsonFile(jsonloc);
     if (jsonFile.open(QIODevice::WriteOnly | QIODevice::Text)) {

@@ -79,7 +79,13 @@ void MainWindow::initCourseTable()
     header << "一" << "二" << "三" << "四" << "五" << "六" << "日";
     ui->courseTable->setHorizontalHeaderLabels(header);
 
-    readCourseJson("course");
+    if(jsonloc=="")
+    {
+        jsonloc="./course.json";
+    }
+    readCourseJson();
+    addCourse.courseFile=jsonloc;
+
 
 }
 
@@ -88,13 +94,16 @@ void MainWindow::on_addCourseButton_clicked() // 添加新课程
     qDebug() << "进入添加课程窗口" << endl;
     // 清空编辑区
     addCourse.clearEdit();
-
+    addCourse.course_id=id_count;
+    addCourse.courseMap=courseMap;
+    id_count++;
     // 添加新课程时不能做别的事情
     addCourse.exec();
 }
 
 void MainWindow::on_fromlinkButton_clicked() //批量导入
 {
+    // 由于link相当于重写，所有不用传参数
     link.clearEdit();
     link.exec();
 }
@@ -107,6 +116,9 @@ void MainWindow::addCourseButton(QString courseName,
                                  QString courseTeacher,
                                  QString courseExamInfo)
 {
+    // 添加一个同步courseMap
+    courseMap=addCourse.courseMap;
+
     if (courseTimeEnd > courseTimeBegin) {
         // 合并单元格
         ui->courseTable->setSpan(courseTimeBegin-1, courseDay, (courseTimeEnd-courseTimeBegin+1), 1);
@@ -136,11 +148,11 @@ void MainWindow::addCourseButton(QString courseName,
 
 }
 
-void MainWindow::readCourseJson(QString courseFile)
+void MainWindow::readCourseJson()
 {
 
     // 读入文件
-    QFile file("./" + courseFile + ".json");
+    QFile file(jsonloc);
     QByteArray jsonData;
     if (file.open(QIODevice::ReadOnly)) {
         jsonData = file.readAll();
@@ -190,7 +202,7 @@ void MainWindow::readCourseJson(QString courseFile)
     }
 }
 
-void MainWindow::writeCourseJson(QString courseFile,
+void MainWindow::writeCourseJson(
                                  QString courseName,
                                  int courseDay,
                                  int courseTimeBegin,
@@ -201,7 +213,7 @@ void MainWindow::writeCourseJson(QString courseFile,
 {
 
     // 读入文件
-    QFile file("./" + courseFile + ".json");
+    QFile file(jsonloc);
     QByteArray jsonData;
 
     if (file.open(QIODevice::ReadWrite)) {

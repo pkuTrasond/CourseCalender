@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QTextCodec>
-
+#include <QMap>
 namespace Ui {
 class AddCourse;
 }
@@ -16,7 +16,11 @@ public:
     explicit AddCourse(QWidget *parent = nullptr);
     ~AddCourse();
 
-    // 清空编辑区
+    //新加的课程的id
+    int course_id=1;
+    QString courseFile;
+    QMap<int, QString> courseMap;
+    // 清空编辑区-*-
     void clearEdit();
 
     // 判断课程冲突

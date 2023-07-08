@@ -7,6 +7,7 @@
 #include<QPushButton>
 #include<QVariantList>
 #include<QFile>
+#include<QMap>
 namespace Ui {
 class Link;
 }
@@ -20,14 +21,13 @@ public:
     explicit Link(QWidget *parent = nullptr);
     ~Link();
 
+    int id_count;
     QString courseName;
     //数据库位置
     QString jsonloc;
     //输入文件
     QString filecontent;
-
-
-
+    QMap<int, QString> courseMap;
 
     //从html文件
     void readandwrite();

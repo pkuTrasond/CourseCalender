@@ -25,16 +25,19 @@ public:
 
     QMap<int, QString> courseMap;
 
+    // html文件导入
     Link link;
 
-    QString jsonloc;
+    QString jsonloc="";
 
     void resetjson(QString jloc)
     {
         this->jsonloc=jloc;
         initCourseTable();
+        id_count=link.id_count;
+        courseMap=link.courseMap;
     }
-
+    int id_count=1;
     // 添加新课程的界面
     AddCourse addCourse;
 
@@ -46,10 +49,10 @@ public:
     void initCourseTable();
 
     // 读取Json
-    void readCourseJson(QString courseFile);
+    void readCourseJson();
 
     // 写入Json
-    void writeCourseJson(QString courseFile,
+    void writeCourseJson(
                          QString courseName,
                          int courseDay,
                          int courseTimeBegin,

@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     addcourse.cpp \
     course.cpp \
+    link.cpp \
     main.cpp \
     mainwindow.cpp \
     matter.cpp
@@ -25,6 +26,7 @@ SOURCES += \
 HEADERS += \
     addcourse.h \
     course.h \
+    link.h \
     mainwindow.h \
     matter.h
 
